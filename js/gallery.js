@@ -17,3 +17,89 @@
 8. You should also check for issues with your JavaScript code using JSHint, linked in the Project Resources.
 
 */
+
+var $overlay = $('<div id="overlay"></div>');
+var $image = $("<img>");
+var $caption = $("<p></p>");
+var $arrowLeft = $('<a class="arrow previous" href="#"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>');
+var $arrowRight = $('<a class="arrow next" href="#"><i class="fa fa-chevron-right" aria-hidden="true"></i></a>');
+var $close = $('<i class="fa fa-times" aria-hidden="true"></i>');
+var $position = 0;
+var $galleryLength = $('#imageGallery li').length;
+
+// 1. Add overlay elements
+  // 1.1 Add an overlay
+  $("body").append($overlay);
+
+  // 1.2 Add an image to overlay
+  $overlay.append($image);
+
+  // 1.3 Add a caption to the overlay
+  $overlay.append($caption);
+
+	// 1.4 Add arrows to overlay
+	
+	$overlay.append($arrowLeft);
+	$overlay.append($arrowRight);
+
+// 1.5 Add close button to overlay
+
+	$overlay.append($close);
+
+// 2. Capture the click event on a link to an image
+
+$(".lightbox-image").click(function(event) { 
+  event.preventDefault();
+	var imageLocation = $(this).attr("href");
+	var nextImageLocation = $(this).parent().next('li').children('a').attr("href");
+	var prevImageLocation = $(this).parent().prev('li').children('a').attr("href");
+	
+  // Updated overlay with the imaged linked to in the link
+  $image.attr("src", imageLocation);
+  
+  // Show the overlay
+  $overlay.show();
+  
+  // Get child's alt attribute and set caption
+  var captionText = $(this).children("img").attr("alt");
+  $caption.text(captionText);
+	
+	// Show arrows
+	$('a.arrow').show();
+	
+	// Make arrows functional
+	
+	$('i.fa.fa-chevron-left').click(function(event) {
+		event.preventDefault();
+		$image.attr("src", prevImageLocation);
+	});
+	$('i.fa.fa-chevron-right').click(function(event) {
+		event.preventDefault();
+		$image.attr("src", nextImageLocation);
+	});
+});
+
+		
+
+// 3. Navigate left & right with arrows
+
+// Need to change the img src for the overlay image
+// Left arrow would replaced the img src with the next img src up the DOM tree
+// Right arrow would replaced the img src with the next img src down the DOM tree
+
+/*
+$('.next').click(function(event) {
+	var $currentImage = $('#overlay img').attr("src");
+	var $currentImageSelector = "a[href='" + $currentImage + "']";
+	var $nextImage = $('a[href="$currentImage"]').next("href");
+	$('#overlay').html('<img src="' + $nextImage '">');
+	$('#overlay img').html('<img src="' + prevImageLocation + '">');
+});
+*/
+	
+
+// 4. Close overlay
+ 
+$close.click(function() {
+  $overlay.hide();
+}); 
