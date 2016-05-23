@@ -11,6 +11,7 @@
     </head>
     <body>
 			<header>
+				<h2>My Photo Gallery</h2>
 			</header>
 			<div id="main-container">
 				<div class="search-box-section">
@@ -26,22 +27,35 @@
 					<li><a class="lightbox-image" href="images/06.jpg"><img title="Fall" src="images/thumbnails/06.jpg" alt="Fall is coming, I love when the leaves on the trees start to change color." width="200"></a></li>
 					<li><a class="lightbox-image" href="images/07.jpg"><img title="Plantation" src="images/thumbnails/07.jpg" alt="I drove past this plantation yesterday, everything is so green!" width="200"></a></li>
 					<li><a class="lightbox-image" href="images/08.jpg"><img title="Dunes" src="images/thumbnails/08.jpg" alt="My summer vacation to the Oregon Coast. I love the sandy dunes!" width="200"></a></li>
-					<li><a class="lightbox-image" href="images/09.jpg"><img title="Countryside Lane" src="images/thumbnails/09.jpg" alt="We enjoyed a quiet stroll down this countryside lane. " width="200"></a></li>
+					<li id="image"><a class="lightbox-image" href="images/09.jpg"><img title="Countryside Lane" src="images/thumbnails/09.jpg" alt="We enjoyed a quiet stroll down this countryside lane. " width="200"></a></li>
 					<li><a class="lightbox-image" href="images/10.jpg"><img title="Sunset" src="images/thumbnails/10.jpg" alt="Sunset at the coast! The sky turned a lovely shade of orange." width="200"></a></li>
 					<li><a class="lightbox-image" href="images/11.jpg"><img title="Cave" src="images/thumbnails/11.jpg" alt="I did a tour of a cave today and the view of the landscape below was breathtaking." width="200"></a></li>
 					<li><a class="lightbox-image" href="images/12.jpg"><img title="Bluebells" src="images/thumbnails/12.jpg" alt="I walked through this meadow of bluebells and got a good view of the snow on the mountain before the fog came in." width="200"></a></li>
+					<li><a class="lightbox-video" href="https://www.youtube.com/embed/HmZKgaHa3Fg"><img title="Patagonian Mountains" src="images/thumbnails/13.jpg" alt="Video of a hike I did to the Torres del Paine in southern Patagonia." width="200"></a></li>
+					<li><a class="lightbox-video" href="https://www.youtube.com/embed/IadsLclBOS8"><img title="Autumn Colours" src="images/thumbnails/14.jpg" alt="At the height of autumn the sun catches every shade of yellow, orange and red." width="200"></a></li>
+					<li><a class="lightbox-video" href="https://www.youtube.com/embed/mcixldqDIEQ"><img title="Spring flowers" src="images/thumbnails/15.jpg" alt="Spring flowers in full growth. Simply stunning" width="200"></a></li>
+					<li><a class="lightbox-video" href="https://www.youtube.com/embed/iNJdPyoqt8U"><img title="Costa Rica Wildlife" src="images/thumbnails/16.jpg" alt="A video from a recent trip showcasing the exotic wildlife of Costa Rica." width="200"></a></li>
 				</ul>
 				</div>
-				<div class="clearfix"></div>
+					<div class="clearfix"></div>
+					<div class="final-section"></div>
 			</div>
 			<script type="text/javascript" src="https://code.jquery.com/jquery-2.2.3.min.js" integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="
 			  crossorigin="anonymous"></script>
-			<script type="text/javascript" src="js/gallery-2.js"></script>
+			<script type="text/javascript" src="js/gallery.js"></script>
 			<script type="text/javascript" src="js/search.js"></script>
+			<script src="js/sticky/jquery.sticky.js"></script>
+			<script>
+  			$(document).ready(function(){
+    			$(".search-box-section").sticky({topSpacing:0});
+  			});
+			</script> 
     </body>
 </html>
 
 <!-- Instructions
+
+
 1. Create a web page using HTML and CSS. The page should have a title, a search box, and a place where a photo gallery will be placed. Make sure it is responsive.
 
 2. Add the provided images to the gallery using the design in the gallery_mockup.png file.
@@ -59,3 +73,5 @@
 8. You should also check for issues with your JavaScript code using JSHint, linked in the Project Resources.
 
 -->
+
+

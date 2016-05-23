@@ -1,19 +1,30 @@
-/* Instructions
+/* Instructions & Steps
 
-1. Create a web page using HTML and CSS. The page should have a title, a search box, and a place where a photo gallery will be placed. Make sure it is responsive.
+Instructions: Implement the search box at the top of the page that filters photos based on the captions. The photos should filter in real-time as you type. Add animation effects when filtering the gallery of photos.
 
-2. Add the provided images to the gallery using the design in the gallery_mockup.png file.
+Step 1. Get the value from the input box
 
-3. Find a jQuery plugin for creating a photo gallery or write your own script. The gallery must include the ability to click on photos and view them in a lightbox (see the photo_lightbox.png file for the design). The gallery should also include support for additional media types like YouTube videos.
+Step 2. Check that value against the photo captions
 
-4. Add text captions to the images when viewed in the lightbox. See the photo_lightbox.png file for the design.
+Step 3: Hide (rather than show I think?) the images whose captions don't match the input value
 
-5. Add back and forward buttons when the lightbox is visible to switch between photos. Also, add keyboard navigation for browsing photos.
-
-6. Implement the search box at the top of the page that filters photos based on the captions. The photos should filter in real-time as you type. Add animation effects when filtering the gallery of photos.
-
-7. Make sure to check your code is valid by running it through an HTML and CSS validator.
-
-8. You should also check for issues with your JavaScript code using JSHint, linked in the Project Resources.
+Step 4: Add animation (maybe using "slow" will work) when filtering
 
 */
+
+$('.search-input-box').keyup(function() {
+	
+	// Get content from search input
+	var $gallerySearch = $(this).val().toLowerCase();
+	//console.log($gallerySearch);
+	
+	// Filter photos to show only those that match search input
+	
+	$('li').each(function(index) {
+		if ( $( 'img', this ).attr("alt").toLowerCase().indexOf($gallerySearch) === -1 ) {
+			$(this).hide("slow");
+		} else {
+			$(this).show();
+		}
+	});
+});

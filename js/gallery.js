@@ -1,105 +1,209 @@
-/* Instructions
+/* Steps
 
-1. Create a web page using HTML and CSS. The page should have a title, a search box, and a place where a photo gallery will be placed. Make sure it is responsive.
+1. Add overlay elements
 
-2. Add the provided images to the gallery using the design in the gallery_mockup.png file.
+2. Create a function that updates the image and video and their catpions
 
-3. Find a jQuery plugin for creating a photo gallery or write your own script. The gallery must include the ability to click on photos and view them in a lightbox (see the photo_lightbox.png file for the design). The gallery should also include support for additional media types like YouTube videos.
+3. Show the overlay when thumbnail images are clicked 
 
-4. Add text captions to the images when viewed in the lightbox. See the photo_lightbox.png file for the design.
+4. Create a function to update $index variable and use it to retrieve a new image/video and caption
 
-5. Add back and forward buttons when the lightbox is visible to switch between photos. Also, add keyboard navigation for browsing photos.
+5. Add click events to arrows using the function in the previous step
 
-6. Implement the search box at the top of the page that filters photos based on the captions. The photos should filter in real-time as you type. Add animation effects when filtering the gallery of photos.
+6. Add the ability to navigate with left and right keyboard keys
 
-7. Make sure to check your code is valid by running it through an HTML and CSS validator.
-
-8. You should also check for issues with your JavaScript code using JSHint, linked in the Project Resources.
+7. Close overlay
 
 */
 
+// Variables
+
 var $overlay = $('<div id="overlay"></div>');
-var $image = $("<img>");
-var $caption = $("<p></p>");
+var $image = $('<img class="lb-image">');
+var $video = $('<iframe class="lb-video" frameborder="0" allowfullscreen></iframe>');
+var $caption = $('<p class="lb-caption"></p>');
 var $arrowLeft = $('<a class="arrow previous" href="#"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>');
 var $arrowRight = $('<a class="arrow next" href="#"><i class="fa fa-chevron-right" aria-hidden="true"></i></a>');
-var $close = $('<i class="fa fa-times" aria-hidden="true"></i>');
-var $position = 0;
-var $galleryLength = $('#imageGallery li').length;
+var $index = 0;
+var $galleryLengthMax = $('#imageGallery li').length - 1;
+
 
 // 1. Add overlay elements
-  // 1.1 Add an overlay
-  $("body").append($overlay);
+  
+	// 1.1 Add an overlay
+  
+	$("body").append($overlay);
 
-  // 1.2 Add an image to overlay
-  $overlay.append($image);
+  // 1.2 Add an image, video and caption to overlay 
 
-  // 1.3 Add a caption to the overlay
-  $overlay.append($caption);
+	$overlay.append($image);
+	$overlay.append($video);
+	$overlay.append($caption);
 
 	// 1.4 Add arrows to overlay
 	
 	$overlay.append($arrowLeft);
-	$overlay.append($arrowRight);
+	$overlay.append($arrowRight); 
 
-// 1.5 Add close button to overlay
 
-	$overlay.append($close);
+// 2. Function that updates the image and video src, the corresponding caption and shows/hides the relevant elements
 
-// 2. Capture the click event on a link to an image
 
-$(".lightbox-image").click(function(event) { 
-  event.preventDefault();
-	var imageLocation = $(this).attr("href");
-	var nextImageLocation = $(this).parent().next('li').children('a').attr("href");
-	var prevImageLocation = $(this).parent().prev('li').children('a').attr("href");
-	
-  // Updated overlay with the imaged linked to in the link
-  $image.attr("src", imageLocation);
-  
-  // Show the overlay
-  $overlay.show();
-  
-  // Get child's alt attribute and set caption
-  var captionText = $(this).children("img").attr("alt");
-  $caption.text(captionText);
-	
-	// Show arrows
-	$('a.arrow').show();
-	
-	// Make arrows functional
+// 2.1 Media update function
+
+	function updateImage($mediaLocation, $captionText) {
+
+		//Update the overlay image with the url link as the src and the attr as the caption. 
+		
+				$image.attr("src", $mediaLocation);
+				$caption.text($captionText);
+				
+		// Show image elements while hiding video elements. 
+			
+				$('#overlay img').show();
+				$($caption).show();
+				$($video).hide();
+		
+		// Show remaining overlay elements
+		
+				$overlay.show();
+				$('a.arrow').show();	
+	}
+
+	function updateVideo($mediaLocation, $captionText) {
+
+		// Update the overlay video with the url link as the src and the attr as the caption. 
+		
+				$video.attr("src", $mediaLocation);
+				$caption.text($captionText);
+		
+		// Show video elements while hiding image elements. 
+		
+				$('#overlay img').hide();
+				$($caption).show();
+				$($video).show();
+		
+		// Show remaining overlay elements
+		
+				$overlay.show();
+				$('a.arrow').show();	
+	} 
+
+
+// 3. Show the overlay when image or video thumbnails are clicked  
+
+	// 3.1 Function to scroll to the top of the page when thumbnails are clicked
+		
+		function goToTop() {
+			$("html, body").animate({ scrollTop: 0 }, "slow");
+			return false;
+		}
+
+	// 3.2 Show overlay on image thumbnail click
+
+		$("#imageGallery a.lightbox-image").click(function(event) { 
+			event.preventDefault();
+			var $mediaLocation = $(this).attr("href");
+			var $captionText = $(this).children("img").attr("alt");
+
+			// 3.2.1 Update $index variable to current location
+
+				$index = $(this).parent().index();
+
+			// 3.2.2 Update overlay image and caption and show relevant overlay elements
+			
+				updateImage($mediaLocation, $captionText);
+
+			// 3.2.4 Scroll to top of page on click
+			
+				goToTop();
+		});
+
+	// 3.3 Show overlay on video thumbnail click
+
+		$("#imageGallery a.lightbox-video").click(function(event) { 
+			event.preventDefault();
+			var $mediaLocation = $(this).attr("href");
+			var $captionText = $(this).children("img").attr("alt");
+
+			// 3.3.1 Update index to current location
+
+				$index = $(this).parent().index();
+
+			// 3.3.2 Update overlay video and caption and show relevant overlay elements
+			
+				updateVideo($mediaLocation, $captionText);
+				
+			// 3.3.3 Scroll to top of page on click
+			
+					goToTop();
+	}); 
+
+
+// 4. Create a function to update the $index variable and use it to retrieve new image and caption
+
+function prevNext(prev) {
+	// The above sets prev to true
+
+	// if prev not true add 1 to $index, i.e. move forward, else take one away from $index, i.e. move backwards
+	if (!prev) {
+		// increase the $index variable by one
+		++$index;
+	} else {
+		// decrease the $index variable by one 
+		--$index;
+	}
+
+// Reset the value of $index if its value moves outside the index range. 
+// Variable $galleryLengthMax is used to accommodate images/video being added or subtracted from the gallery in the future.
+
+	if ($index < 0) {
+		$index = $galleryLengthMax;
+	} 
+	if ($index > $galleryLengthMax) {
+		$index = 0;
+	}
+
+// Get the new media (image or video) using the index variable to locate it
+
+	var $newMedia = $('#imageGallery li').get($index).getElementsByTagName("a");
+	var $mediaLocation = $($newMedia).attr("href");
+	var $captionText = $($newMedia).children("img").attr("alt");
+
+	if ( $mediaLocation.indexOf("youtube") === -1 ) {
+		updateImage($mediaLocation, $captionText);
+	} else {
+		updateVideo($mediaLocation, $captionText);
+	}
+}
+
+// 5. Add click events to arrows using the prevNext function
 	
 	$('i.fa.fa-chevron-left').click(function(event) {
-		event.preventDefault();
-		$image.attr("src", prevImageLocation);
+		prevNext(true);
 	});
 	$('i.fa.fa-chevron-right').click(function(event) {
-		event.preventDefault();
-		$image.attr("src", nextImageLocation);
+		prevNext(); 
 	});
-});
 
-		
 
-// 3. Navigate left & right with arrows
+// 6. Add the ability to navigate with left and right keys on keyboard
 
-// Need to change the img src for the overlay image
-// Left arrow would replaced the img src with the next img src up the DOM tree
-// Right arrow would replaced the img src with the next img src down the DOM tree
+	$('body').keydown(function(event) {
+		if(event.keyCode === 37) { // left
+			prevNext(true);
+		} else if (event.keyCode === 39) { // right
+			prevNext();
+		}
+	});
 
-/*
-$('.next').click(function(event) {
-	var $currentImage = $('#overlay img').attr("src");
-	var $currentImageSelector = "a[href='" + $currentImage + "']";
-	var $nextImage = $('a[href="$currentImage"]').next("href");
-	$('#overlay').html('<img src="' + $nextImage '">');
-	$('#overlay img').html('<img src="' + prevImageLocation + '">');
-});
-*/
 	
-
-// 4. Close overlay
+// 7. Close overlay
  
-$close.click(function() {
-  $overlay.hide();
-}); 
+	$overlay.click(function(event) {
+		// exclude clicks on arrows and other elements
+		if(event.target.id === "overlay")
+			
+		// close overlay	
+		$(this).hide();
+	}); 
