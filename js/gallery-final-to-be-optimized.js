@@ -51,40 +51,43 @@ var $galleryLengthMax = $('#imageGallery li').length - 1;
 
 // 2.1 Media update function
 
-	function updateMedia($mediaLocation, $captionText) {
+	function updateImage($mediaLocation, $captionText) {
+
+		//Update the overlay image with the url link as the src and the attr as the caption. 
 		
-		// Show overlay elements common to images and videos
-		
-		$overlay.show();
-		$('a.arrow').show();
-		$caption.text($captionText).show();
-		
-		// Check for media format then show appropriate overlay elements
-		
-		if ( $mediaLocation.indexOf('youtube') === -1 ) {
- 
-			//Update the overlay image with the url link as the src.
-			
-			$image.attr('src', $mediaLocation);
+				$image.attr('src', $mediaLocation);
+				$caption.text($captionText);
 				
-			// Show image while hiding video. 
+		// Show image elements while hiding video elements. 
 			
-			$('#overlay img').show();
-			$($video).hide();
-			
-		} else {
+				$('#overlay img').show();
+				$($caption).show();
+				$($video).hide();
 		
-			// Update the overlay video with the url link as the src. 
+		// Show remaining overlay elements
 		
-			$video.attr('src', $mediaLocation);
-		
-			// Show video while hiding image. 
-		
-			$('#overlay img').hide();
-			$($video).show();
-		
-		}
+				$overlay.show();
+				$('a.arrow').show();	
 	}
+
+	function updateVideo($mediaLocation, $captionText) {
+
+		// Update the overlay video with the url link as the src and the attr as the caption. 
+		
+				$video.attr('src', $mediaLocation);
+				$caption.text($captionText);
+		
+		// Show video elements while hiding image elements. 
+		
+				$('#overlay img').hide();
+				$($caption).show();
+				$($video).show();
+		
+		// Show remaining overlay elements
+		
+				$overlay.show();
+				$('a.arrow').show();	
+	} 
 
 
 // 3. Show the overlay when image or video thumbnails are clicked  
@@ -109,7 +112,7 @@ var $galleryLengthMax = $('#imageGallery li').length - 1;
 
 			// 3.2.2 Update overlay image and caption and show relevant overlay elements
 			
-				updateMedia($mediaLocation, $captionText);
+				updateImage($mediaLocation, $captionText);
 
 			// 3.2.4 Scroll to top of page on click
 			
@@ -129,7 +132,7 @@ var $galleryLengthMax = $('#imageGallery li').length - 1;
 
 			// 3.3.2 Update overlay video and caption and show relevant overlay elements
 			
-				updateMedia($mediaLocation, $captionText);
+				updateVideo($mediaLocation, $captionText);
 				
 			// 3.3.3 Scroll to top of page on click
 			
@@ -137,17 +140,18 @@ var $galleryLengthMax = $('#imageGallery li').length - 1;
 	}); 
 
 
-// 4. Create a function to update the $index variable and use it to retrieve new media and caption
+// 4. Create a function to update the $index variable and use it to retrieve new image and caption
 
 function prevNext(prev) {
 	// The above sets prev to true
 
 	// if prev not true add 1 to $index, i.e. move forward, else take one away from $index, i.e. move backwards
-	
 	if (!prev) {
-		++$index; // increase the $index variable by one
+		// increase the $index variable by one
+		++$index;
 	} else {
-		--$index; // decrease the $index variable by one 
+		// decrease the $index variable by one 
+		--$index;
 	}
 
 // Reset the value of $index if its value moves outside the index range. 
@@ -166,8 +170,11 @@ function prevNext(prev) {
 	var $mediaLocation = $($newMedia).attr('href');
 	var $captionText = $($newMedia).children('img').attr('alt');
 
-	updateMedia($mediaLocation, $captionText);
-	
+	if ( $mediaLocation.indexOf('youtube') === -1 ) {
+		updateImage($mediaLocation, $captionText);
+	} else {
+		updateVideo($mediaLocation, $captionText);
+	}
 }
 
 // 5. Add click events to arrows using the prevNext function
@@ -183,26 +190,20 @@ function prevNext(prev) {
 // 6. Add the ability to navigate with left and right keys on keyboard
 
 	$('body').keydown(function(event) {
-		
 		// makes sure keyboard navigation only works when overlay is open
-		
 		if(event.keyCode === 37 && $('#overlay').css('display') === 'block') { // left
 			prevNext(true);
 		} else if (event.keyCode === 39 && $('#overlay').css('display') === 'block') { // right
 			prevNext();
 		}
-		
 	});
 
 	
 // 7. Close overlay
  
 	$overlay.click(function(event) {
-		
 		// exclude clicks on arrows and other elements
-		
 		if(event.target.id === 'overlay') {	
 			$(this).hide(); // close overlay
 		}
-		
 	}); 

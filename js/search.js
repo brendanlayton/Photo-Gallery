@@ -15,16 +15,17 @@ Step 4: Add animation (maybe using "slow" will work) when filtering
 $('.search-input-box').keyup(function() {
 	
 	// Get content from search input
-	var $gallerySearch = $(this).val().toLowerCase();
-	//console.log($gallerySearch);
 	
+	var $gallerySearch = $(this).val().toLowerCase();
+
 	// Filter photos to show only those that match search input
 	
 	$('li').each(function(index) {
-		if ( $( 'img', this ).attr("alt").toLowerCase().indexOf($gallerySearch) === -1 ) {
-			$(this).hide("slow");
+		if ( $( 'img', this ).attr('alt').toLowerCase().indexOf($gallerySearch) === -1 ) {
+			$(this).hide('slow');
 		} else {
 			$(this).show();
 		}
 	});
+	
 });
