@@ -167,7 +167,7 @@ i.fa.fa-chevron-right {
 @media screen and (min-width: 480px) {
 
 	#overlay img { 
-		width: 65%
+		width: 65%;
 	}
 	
 	#overlay img, .lb-video { 
